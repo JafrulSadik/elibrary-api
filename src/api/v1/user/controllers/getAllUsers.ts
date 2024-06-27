@@ -1,6 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../../../../models/User";
-import { notFound, serverError } from "../../../../utils";
+import { serverError } from "../../../../utils";
+import { countUser } from "./../../../../lib/user/index";
+import { paginationGen } from "./../../../../utils/pagination";
+
+type QueryParams = {
+  page?: string;
+  limit?: string;
+  sortBy?: string;
+  sortType?: string;
+  search?: string;
+};
 
 export const getAllUser = async (
   req: Request,
@@ -8,18 +18,44 @@ export const getAllUser = async (
   next: NextFunction
 ) => {
   try {
-    const users = await User.find().select(["-__v", "-password"]);
+    const { page, limit, sortBy, sortType, search }: QueryParams = req.query;
 
-    if (!users) {
-      return next(notFound("Users not found."));
-    }
+    const pageNum = page ? parseInt(page) : 1;
+    const limitNum = limit ? parseInt(limit) : 10;
+    const sortField = sortBy || "updatedAt";
+    const sortOrder = sortType === "dsc" ? -1 : 1;
+    const searchTerm = search || "";
+
+    const sort = `${sortOrder}${sortField}`;
+    const searchFilter = {
+      name: {
+        $regex: searchTerm,
+        $options: "i",
+      },
+    };
+
+    const users = await User.find(searchFilter)
+      .select(["-__v", "-password"])
+      .sort(sort)
+      .skip(pageNum * limitNum - limitNum)
+      .limit(limitNum);
+
+    const userNum = await countUser(searchTerm);
+
+    const pagination = paginationGen({
+      totalItem: userNum,
+      limit: limitNum,
+      currPage: pageNum,
+    });
 
     res.status(200).json({
       code: 200,
       message: "Successfully retive data.",
       data: users,
+      pagination,
     });
   } catch (error) {
+    console.log(error);
     return next(serverError("Error occured while retriving users data."));
   }
 };

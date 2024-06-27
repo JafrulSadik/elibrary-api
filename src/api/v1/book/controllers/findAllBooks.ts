@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Book from "../../../../models/Book";
-import { notFound, serverError } from "../../../../utils";
+import { BookType } from "../../../../types";
+import { serverError } from "../../../../utils";
 
 export const findAllBooks = async (
   req: Request,
@@ -8,11 +9,7 @@ export const findAllBooks = async (
   next: NextFunction
 ) => {
   try {
-    const books = await Book.find();
-
-    if (!books) {
-      return next(notFound("Users not found."));
-    }
+    const books: BookType[] = await Book.find();
 
     res.status(200).json({
       code: 200,
@@ -20,6 +17,6 @@ export const findAllBooks = async (
       data: books,
     });
   } catch (error) {
-    return next(serverError("Error occured while retriving users data."));
+    return next(serverError("An error occurred while retrieving books data."));
   }
 };

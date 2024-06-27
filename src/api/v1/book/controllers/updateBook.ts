@@ -59,7 +59,6 @@ export const updateBook = async (
         splitUrl.at(-2) +
         "/" +
         splitUrl.at(-1)?.split(".").at(-2);
-      console.log(publicId);
 
       try {
         await cloudinary.api.delete_resources([publicId]);
@@ -87,7 +86,11 @@ export const updateBook = async (
           format: "pdf",
         });
       } catch (error) {
-        return next(serverError("Uploading book file in cloudinary faild."));
+        return next(
+          serverError(
+            "An error occurred while uploading the file to cloudinary."
+          )
+        );
       }
 
       const bookPdfFileUrl = book.file;
@@ -132,7 +135,6 @@ export const updateBook = async (
       book: updatedBook,
     });
   } catch (error) {
-    console.log(error);
-    return next(serverError("Error occured while updating a book."));
+    return next(serverError("There was a problem updating the book"));
   }
 };

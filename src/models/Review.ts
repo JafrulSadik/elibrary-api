@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import { ReveiwType } from "./../types/Review";
 
-const reviewSchema = new mongoose.Schema(
+const reviewSchema = new mongoose.Schema<ReveiwType>(
   {
     bookId: {
       type: Schema.Types.ObjectId,
