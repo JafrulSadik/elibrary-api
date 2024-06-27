@@ -9,6 +9,6 @@ const router = Router();
 router.use("/api/v1/auth", authRouter);
 router.use("/api/v1/books", bookRouter);
 router.use("/api/v1/users", userRouter);
-router.use("/api/v1/reviews", reviewRouter);
+router.use("/api/v1/books", reviewRouter);
 
 export default router;

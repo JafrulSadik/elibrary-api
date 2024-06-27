@@ -13,5 +13,5 @@ export const countBooks = async (search: string = "") => {
     },
   };
 
-  return await Book.countDocuments(filter);
+  return Book.countDocuments(filter);
 };

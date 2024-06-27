@@ -1,16 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../../../../models/User";
+import { QueryParams } from "../../../../types";
 import { serverError } from "../../../../utils";
 import { countUser } from "./../../../../lib/user/index";
 import { paginationGen } from "./../../../../utils/pagination";
-
-type QueryParams = {
-  page?: string;
-  limit?: string;
-  sortBy?: string;
-  sortType?: string;
-  search?: string;
-};
 
 export const getAllUser = async (
   req: Request,

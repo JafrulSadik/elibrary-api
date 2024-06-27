@@ -3,16 +3,16 @@ import Review from "../../../../models/Review";
 import { notFound, serverError } from "../../../../utils";
 import { bookExist } from "./../../../../lib/book/index";
 
-export const addReview = async (
+export const createReview = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { userId, bookId, rating, comment } = req.body;
+  const { userId, rating, comment } = req.body;
+  const { bookId } = req.params;
 
   try {
     const book = await bookExist(bookId);
-    console.log("not ok");
     if (!book) {
       return next(notFound("Book not found!"));
     }

@@ -1,40 +1,33 @@
 import { NextFunction, Request, Response } from "express";
-import { countBooks } from "../../../../lib/book";
-import Book from "../../../../models/Book";
-import { QueryParams } from "../../../../types";
+import { countReviews } from "../../../../lib/review";
+import Review from "../../../../models/Review";
+import { ReveiwType, ReviewQueryParams } from "../../../../types";
 import { paginationGen, serverError } from "../../../../utils";
 
-export const findAllBooks = async (
+export const findAllReviewsForBook = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { page, limit, sortBy, sortType, search }: QueryParams = req.query;
+    const { page, limit, sortBy, sortType }: ReviewQueryParams = req.query;
+    const { bookId } = req.params;
 
     const pageNum = page ? parseInt(page) : 1;
     const limitNum = limit ? parseInt(limit) : 10;
-    const sortField = sortBy || "updatedAt";
     const sortOrder = sortType === "dsc" ? -1 : 1;
-    const searchTerm = search || "";
-
+    const sortField = sortBy || "updatedAt";
     const sort = `${sortOrder}${sortField}`;
-    const searchFilter = {
-      title: {
-        $regex: searchTerm,
-        $options: "i",
-      },
-    };
 
-    const books = await Book.find(searchFilter)
+    const reviews: ReveiwType[] = await Review.find({ bookId })
       .sort(sort)
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);
 
-    const bookNum = await countBooks(searchTerm);
+    const reviewNum = await countReviews(bookId);
 
     const pagination = paginationGen({
-      totalItem: bookNum,
+      totalItem: reviewNum,
       limit: limitNum,
       currPage: pageNum,
     });
@@ -42,10 +35,10 @@ export const findAllBooks = async (
     res.status(200).json({
       code: 200,
       message: "Successfully retive data.",
-      data: books,
+      data: reviews,
       pagination,
     });
   } catch (error) {
-    return next(serverError("An error occurred while retrieving books data."));
+    return next(serverError("Error occured while finding reviews."));
   }
 };

@@ -19,8 +19,6 @@ export const paginationGen = ({
   const prev = currPage > 1 ? currPage - 1 : null;
   const next = totalPage > currPage ? currPage + 1 : null;
 
-  console.log(totalPage);
-
   return {
     page: currPage,
     prev,
