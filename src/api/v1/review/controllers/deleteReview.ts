@@ -9,8 +9,6 @@ export const deleteReview = async (
 ) => {
   const { reviewId } = req.params;
 
-  console.log(reviewId);
-
   try {
     const review = await Review.findById({ _id: reviewId });
 
