@@ -55,9 +55,11 @@ const bookSchema = new mongoose.Schema<BookType>(
     },
     totalRating: {
       type: Number,
+      default: 0,
     },
     numOfRating: {
       type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
