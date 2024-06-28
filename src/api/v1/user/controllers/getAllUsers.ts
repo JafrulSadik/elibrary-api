@@ -19,7 +19,6 @@ export const getAllUser = async (
     const sortOrder = sortType === "dsc" ? -1 : 1;
     const searchTerm = search || "";
 
-    const sort = `${sortOrder}${sortField}`;
     const searchFilter = {
       name: {
         $regex: searchTerm,
@@ -29,7 +28,7 @@ export const getAllUser = async (
 
     const users = await User.find(searchFilter)
       .select(["-__v", "-password"])
-      .sort(sort)
+      .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);
 

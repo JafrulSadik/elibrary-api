@@ -18,7 +18,6 @@ export const findAllBooks = async (
     const sortOrder = sortType === "dsc" ? -1 : 1;
     const searchTerm = search || "";
 
-    const sort = `${sortOrder}${sortField}`;
     const searchFilter = {
       title: {
         $regex: searchTerm,
@@ -27,7 +26,7 @@ export const findAllBooks = async (
     };
 
     const books = await Book.find(searchFilter)
-      .sort(sort)
+      .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);
 

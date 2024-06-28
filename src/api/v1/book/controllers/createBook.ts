@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import path from "node:path";
 import cloudinary from "../../../../config/cloudinary";
 import Book from "../../../../models/Book";
+import { AuthRequest } from "../../../../types";
 import { badRequest, removeFile, serverError } from "../../../../utils";
 
 export const createBook = async (
@@ -10,6 +11,10 @@ export const createBook = async (
   next: NextFunction
 ) => {
   const { title, genre, description, author } = req.body;
+
+  const _req = req as AuthRequest;
+  const user = _req.user;
+
   try {
     if (!title || !genre || !description) {
       return next(badRequest("Invalid parameters."));
@@ -72,7 +77,7 @@ export const createBook = async (
       title,
       description,
       genre,
-      author: author,
+      author: user.id,
       cover: coverImgUploadResult.secure_url,
       file: bookFileUploadResult.secure_url,
     });

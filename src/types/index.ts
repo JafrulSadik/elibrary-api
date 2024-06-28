@@ -1,3 +1,4 @@
+export * from "./Auth";
 export * from "./Book";
 export * from "./Error";
 export * from "./Others";

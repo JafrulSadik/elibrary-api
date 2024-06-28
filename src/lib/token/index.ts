@@ -8,7 +8,7 @@ type TokenPayloadType = {
   role: string;
 };
 
-export const generateToken = (payload: TokenPayloadType) => {
+export const generateToken = (payload: TokenPayloadType): string => {
   try {
     const accessToken = sign(payload, config.jwtSecret as string, {
       expiresIn: "1h",

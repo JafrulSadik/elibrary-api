@@ -34,10 +34,11 @@ export const login = async (
       {
         id: user._id,
         role: user.role,
+        email: user.email,
       },
       config.jwtSecret as string,
       {
-        expiresIn: "1hr",
+        expiresIn: "1h",
       }
     );
 

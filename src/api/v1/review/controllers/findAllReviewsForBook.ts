@@ -17,10 +17,9 @@ export const findAllReviewsForBook = async (
     const limitNum = limit ? parseInt(limit) : 10;
     const sortOrder = sortType === "dsc" ? -1 : 1;
     const sortField = sortBy || "updatedAt";
-    const sort = `${sortOrder}${sortField}`;
 
     const reviews: ReveiwType[] = await Review.find({ bookId })
-      .sort(sort)
+      .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);
 
