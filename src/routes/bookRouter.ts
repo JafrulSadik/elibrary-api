@@ -22,19 +22,22 @@ bookRouter.post(
   upload.fields(fields),
   bookController.createBook
 );
-bookRouter.put("/", upload.fields(fields), bookController.updateBook);
+bookRouter.put(
+  "/",
+  authenticate,
+  authorize(["user"]),
+  bookOwnership,
+  upload.fields(fields),
+  bookController.updateBook
+);
 bookRouter.delete(
   "/:bookId",
   authenticate,
-  authorize(["User"]),
+  authorize(["user", "admin"]),
   bookOwnership,
   bookController.deleteBook
 );
-bookRouter.get(
-  "/",
-  authenticate,
-  authorize(["admin", "user"]),
-  bookController.findAllBooks
-);
+bookRouter.get("/", bookController.findAllBooks);
+bookRouter.get("/:bookId", bookController.getSingleBook);
 
 export default bookRouter;

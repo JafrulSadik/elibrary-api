@@ -7,6 +7,7 @@ export const authorize =
   (req: Request, res: Response, next: NextFunction) => {
     const _req = req as AuthRequest;
     const roleExist = roles.includes(_req.user.role);
+
     if (!roleExist) {
       return next(authorizationError());
     }

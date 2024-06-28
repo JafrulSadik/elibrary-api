@@ -13,13 +13,13 @@ export const bookOwnership = async (
 
   try {
     if (!book) {
-      throw notFound("Book not found.");
+      return next(notFound("Book not found."));
     }
 
     const _req = req as AuthRequest;
 
-    if (book.author.toString() !== _req.user.id) {
-      return next(authorizationError("You do not own this resource"));
+    if (book.author.toString() !== _req.user.id && _req.user.role !== "admin") {
+      return next(authorizationError("You are not authorized."));
     }
 
     next();
