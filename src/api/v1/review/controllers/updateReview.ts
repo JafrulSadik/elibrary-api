@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import Book from "../../../../models/Book";
 import Review from "../../../../models/Review";
 import { notFound } from "../../../../utils";
 
@@ -8,10 +9,15 @@ export const updateReview = async (
   next: NextFunction
 ) => {
   try {
-    const { reviewId } = req.params;
+    const { reviewId, bookId } = req.params;
     const { comment, rating } = req.body;
 
     const review = await Review.findById({ _id: reviewId });
+    const book = await Book.findById({ _id: bookId });
+
+    if (!book) {
+      return next(notFound("Book not found!"));
+    }
 
     if (!review) {
       return next(notFound("Review not found."));
@@ -22,6 +28,15 @@ export const updateReview = async (
       {
         comment: comment || review.comment,
         rating: rating || review.rating,
+      }
+    );
+
+    const bookRating = book.totalRating + (rating - review.rating);
+
+    await Book.findByIdAndUpdate(
+      { _id: bookId },
+      {
+        totalRating: bookRating,
       }
     );
 

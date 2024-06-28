@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import Book from "../../../../models/Book";
 import Review from "../../../../models/Review";
 import { AuthRequest } from "../../../../types";
 import { notFound, serverError } from "../../../../utils";
-import { bookExist } from "./../../../../lib/book/index";
 
 export const createReview = async (
   req: Request,
@@ -15,7 +15,7 @@ export const createReview = async (
   const { bookId } = req.params;
 
   try {
-    const book = await bookExist(bookId);
+    const book = await Book.findById({ _id: bookId });
     if (!book) {
       return next(notFound("Book not found!"));
     }
@@ -41,12 +41,24 @@ export const createReview = async (
 
     await review.save();
 
+    const bookRating = book.totalRating + rating;
+    const ratingUser = book.numOfRating + 1;
+
+    await Book.findByIdAndUpdate(
+      { _id: bookId },
+      {
+        totalRating: bookRating,
+        numOfRating: ratingUser,
+      }
+    );
+
     res.status(201).json({
       code: 201,
       message: "Review added successfully.",
       data: review,
     });
   } catch (error) {
+    console.log(error);
     return next(serverError("Something went wrong. Review failed."));
   }
 };

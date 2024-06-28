@@ -12,14 +12,14 @@ reviewRouter.post(
 );
 reviewRouter.get("/:bookId/reviews", reviewController.findAllReviewsForBook);
 reviewRouter.delete(
-  "/reviews/:reviewId",
+  "/:bookId/reviews/:reviewId",
   authenticate,
   authorize(["user", "admin"]),
   reviewOwnership,
   reviewController.deleteReview
 );
 reviewRouter.patch(
-  "/reviews/:reviewId",
+  "/:bookId/reviews/:reviewId",
   authenticate,
   authorize(["user"]),
   reviewOwnership,
