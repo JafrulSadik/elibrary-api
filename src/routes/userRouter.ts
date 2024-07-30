@@ -10,6 +10,12 @@ userRouter.get(
   authorize(["admin"]),
   userController.getSingleUser
 );
+userRouter.get(
+  "/:userId/all-books",
+  authenticate,
+  authorize(["user", "admin"]),
+  userController.getUserBooks
+);
 userRouter.get("/", userController.getAllUser);
 
 export default userRouter;
