@@ -4,6 +4,6 @@ import { authController } from "../api/v1/auth";
 const authRouter = express.Router();
 
 authRouter.post("/register", authController.register);
-authRouter.get("/login", authController.login);
+authRouter.post("/login", authController.login);
 
 export default authRouter;
