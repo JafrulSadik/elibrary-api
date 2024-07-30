@@ -5,6 +5,7 @@ import User from "../../../../models/User";
 import {
   authenticationError,
   badRequest,
+  notFound,
   serverError,
 } from "../../../../utils";
 import { compareHash } from "../../../../utils/hashing";
@@ -15,6 +16,7 @@ export const login = async (
   next: NextFunction
 ) => {
   const { email, password } = req.body;
+
   try {
     if (!email || !password) {
       return next(badRequest("Invalid parameters"));
@@ -22,12 +24,12 @@ export const login = async (
 
     const user = await User.findOne({ email });
     if (!user) {
-      return next(authenticationError("User name or password doesn't match."));
+      return next(notFound("User not found."));
     }
 
     const verifyUser = await compareHash({ password, hash: user.password });
     if (!verifyUser) {
-      return next(badRequest("User name or password doesn't match."));
+      return next(authenticationError("Wrong credential."));
     }
 
     const token = sign(
@@ -38,7 +40,7 @@ export const login = async (
       },
       config.jwtSecret as string,
       {
-        expiresIn: "1h",
+        expiresIn: "1D",
       }
     );
 
@@ -46,7 +48,15 @@ export const login = async (
       code: 200,
       message: "Login successfully.",
       data: {
-        accessToken: token,
+        user: {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+        token: {
+          accessToken: token,
+        },
       },
       links: {
         self: `/users/${user._id}`,
