@@ -8,6 +8,7 @@ type PaginationResult = {
   page: number;
   prev: number | null;
   next: number | null;
+  totalPage: number;
 };
 
 export const paginationGen = ({
@@ -23,5 +24,6 @@ export const paginationGen = ({
     page: currPage,
     prev,
     next,
+    totalPage,
   };
 };
