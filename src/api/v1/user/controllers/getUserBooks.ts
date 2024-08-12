@@ -11,7 +11,7 @@ export const getUserBooks = async (
   next: NextFunction
 ) => {
   try {
-    const { page, limit, sortBy, sortType, search }: QueryParams = req.query;
+    const { page, limit, sort_by, sort_type, search }: QueryParams = req.query;
     const { userId } = req.params;
 
     const user = await User.findById({ _id: userId });
@@ -22,8 +22,8 @@ export const getUserBooks = async (
 
     const pageNum = page ? parseInt(page) : 1;
     const limitNum = limit ? parseInt(limit) : 10;
-    const sortField = sortBy || "updatedAt";
-    const sortOrder = sortType === "dsc" ? -1 : 1;
+    const sortField = sort_by || "updatedAt";
+    const sortOrder = sort_type === "asc" ? 1 : -1;
     const searchTerm = search || "";
 
     const searchFilter = {

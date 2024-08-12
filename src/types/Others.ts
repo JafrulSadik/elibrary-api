@@ -1,8 +1,8 @@
 export type QueryParams = {
   page?: string;
   limit?: string;
-  sortBy?: string;
-  sortType?: string;
+  sort_by?: string;
+  sort_type?: string;
   search?: string;
 };
 

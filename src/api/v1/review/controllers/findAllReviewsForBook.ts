@@ -10,13 +10,13 @@ export const findAllReviewsForBook = async (
   next: NextFunction
 ) => {
   try {
-    const { page, limit, sortBy, sortType }: ReviewQueryParams = req.query;
+    const { page, limit, sort_by, sort_type }: ReviewQueryParams = req.query;
     const { bookId } = req.params;
 
     const pageNum = page ? parseInt(page) : 1;
     const limitNum = limit ? parseInt(limit) : 10;
-    const sortOrder = sortType === "dsc" ? -1 : 1;
-    const sortField = sortBy || "updatedAt";
+    const sortOrder = sort_type === "asc" ? 1 : -1;
+    const sortField = sort_by || "updatedAt";
 
     const reviews: ReveiwType[] = await Review.find({ bookId })
       .sort([[sortField, sortOrder]])
