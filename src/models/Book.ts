@@ -11,10 +11,8 @@ const bookSchema = new mongoose.Schema<BookType>(
       required: true,
     },
     genre: {
-      type: String,
-      length: {
-        minlength: 1,
-      },
+      type: Schema.Types.ObjectId,
+      ref: "Genre",
       required: true,
     },
     cover: {
@@ -27,6 +25,7 @@ const bookSchema = new mongoose.Schema<BookType>(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     status: {
       type: String,

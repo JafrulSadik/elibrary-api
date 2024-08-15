@@ -11,10 +11,13 @@ genreRouter.post(
   genreController.createGenre
 );
 
-genreRouter.get(
-  "/",
-  // authenticate, authorize(["admin"])
-  genreController.findAllGenre
+genreRouter.get("/", genreController.findAllGenre);
+
+genreRouter.delete(
+  "/:genreId",
+  authenticate,
+  authorize(["admin"]),
+  genreController.deleteGenre
 );
 
 export default genreRouter;

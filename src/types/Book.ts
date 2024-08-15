@@ -1,9 +1,10 @@
+import { GenreType } from "./Genre";
 import { UserType } from "./User";
 
 export type BookType = {
   _id: string;
   title: string;
-  genre: string;
+  genre: GenreType;
   cover: string;
   description: string;
   author: UserType;

@@ -40,8 +40,6 @@ export const deleteBook = async (
     const bookPublicId =
       pdfSplitUrl.at(-3) + "/" + pdfSplitUrl.at(-2) + "/" + pdfSplitUrl.at(-1);
 
-    console.log(bookPublicId);
-
     try {
       await cloudinary.api.delete_resources([bookPublicId], {
         resource_type: "raw",
