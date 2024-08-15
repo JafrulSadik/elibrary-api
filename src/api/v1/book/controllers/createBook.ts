@@ -10,13 +10,13 @@ export const createBook = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, genre, description, author } = req.body;
+  const { title, genreId, description, author } = req.body;
 
   const _req = req as AuthRequest;
   const user = _req.user;
 
   try {
-    if (!title || !genre || !description) {
+    if (!title || !genreId || !description) {
       return next(badRequest("Invalid parameters."));
     }
 
@@ -76,7 +76,7 @@ export const createBook = async (
     const book = new Book({
       title,
       description,
-      genre,
+      genre: genreId,
       author: user.id,
       cover: coverImgUploadResult.secure_url,
       file: bookFileUploadResult.secure_url,
