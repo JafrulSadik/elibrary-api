@@ -29,3 +29,9 @@ export const authorizationError = (msg = "Permission Denied") => {
   error.status = 403;
   return error;
 };
+
+export const duplicateError = (msg = "Duplicate found") => {
+  const error = new Error(msg) as ResponseError;
+  error.status = 409;
+  return error;
+};
