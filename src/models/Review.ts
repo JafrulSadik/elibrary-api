@@ -11,7 +11,7 @@ const reviewSchema = new mongoose.Schema<ReveiwType>(
     authorId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      requried: true,
+      required: true,
     },
     comment: {
       type: String,
@@ -25,4 +25,4 @@ const reviewSchema = new mongoose.Schema<ReveiwType>(
   { timestamps: true }
 );
 
-export default mongoose.model("Review", reviewSchema);
+export default mongoose.model<ReveiwType>("Review", reviewSchema);
