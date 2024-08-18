@@ -10,10 +10,15 @@ export const getSingleBook = async (
   try {
     const { bookId } = req.params;
 
-    const book = await Book.findById({ _id: bookId }).populate({
-      path: "author",
-      select: "name",
-    });
+    const book = await Book.findById({ _id: bookId })
+      .lean()
+      .populate({
+        path: "author",
+        select: "name",
+      })
+      .populate({
+        path: "genre",
+      });
 
     if (!book) {
       return next(notFound("Book not found."));

@@ -13,6 +13,8 @@ genreRouter.post(
 
 genreRouter.get("/", genreController.findAllGenre);
 
+genreRouter.get("/:genreId/books", genreController.findAllGenre);
+
 genreRouter.delete(
   "/:genreId",
   authenticate,

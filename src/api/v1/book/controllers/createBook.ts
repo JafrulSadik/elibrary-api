@@ -2,8 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import path from "node:path";
 import cloudinary from "../../../../config/cloudinary";
 import Book from "../../../../models/Book";
+import Genre from "../../../../models/Genre";
 import { AuthRequest } from "../../../../types";
-import { badRequest, removeFile, serverError } from "../../../../utils";
+import {
+  badRequest,
+  notFound,
+  removeFile,
+  serverError,
+} from "../../../../utils";
 
 export const createBook = async (
   req: Request,
@@ -18,6 +24,11 @@ export const createBook = async (
   try {
     if (!title || !genreId || !description) {
       return next(badRequest("Invalid parameters."));
+    }
+
+    const genre = await Genre.findById(genreId);
+    if (!genre) {
+      return next(notFound("Genre not found."));
     }
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };

@@ -36,6 +36,7 @@ export const getUserBooks = async (
 
     const books = await Book.find(searchFilter)
       .populate({ path: "author", select: ["name"] })
+      .populate({ path: "genre", select: ["title", "code"] })
       .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);

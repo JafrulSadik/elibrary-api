@@ -4,6 +4,7 @@ export type QueryParams = {
   sort_by?: string;
   sort_type?: string;
   search?: string;
+  genres?: string;
 };
 
 export type ReviewQueryParams = Omit<QueryParams, "search">;
