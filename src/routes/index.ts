@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authRouter from "./authRouter";
 import bookRouter from "./bookRouter";
+import favouriteBookRouter from "./favouriteBookRouter";
 import genreRouter from "./genreRouter";
 import reviewRouter from "./reviewRouter";
 import userRouter from "./userRouter";
@@ -12,5 +13,6 @@ router.use("/api/v1/books", bookRouter);
 router.use("/api/v1/users", userRouter);
 router.use("/api/v1/books", reviewRouter);
 router.use("/api/v1/genres", genreRouter);
+router.use("/api/v1/favourite/", favouriteBookRouter);
 
 export default router;
