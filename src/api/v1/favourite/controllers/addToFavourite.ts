@@ -11,7 +11,6 @@ export const addToFavourite = async (
 ) => {
   const { userId, bookId } = req.body;
 
-  console.log({ userId, bookId });
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -49,11 +48,10 @@ export const addToFavourite = async (
       }
     }
 
-    console.log(favourite);
-
     const response = {
       code: 200,
       message: "Book added to favourite.",
+      data: true,
     };
 
     res.status(200).json(response);

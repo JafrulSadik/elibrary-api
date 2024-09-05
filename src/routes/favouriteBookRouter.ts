@@ -10,10 +10,19 @@ favouriteBookRouter.patch(
   authorize(["user", "admin"]),
   favouriteController.addToFavourite
 );
+
 favouriteBookRouter.get(
-  "/:userId",
+  "/books/:userId",
+  authenticate,
   authorize(["user", "admin"]),
   favouriteController.findAllFavouriteBooks
+);
+
+favouriteBookRouter.get(
+  "/:userId/:bookId",
+  authenticate,
+  authorize(["user", "admin"]),
+  favouriteController.isAddedToFavourite
 );
 
 export default favouriteBookRouter;

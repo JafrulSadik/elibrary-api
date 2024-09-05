@@ -10,7 +10,6 @@ export const findAllFavouriteBooks = async (
 ) => {
   const { page, limit }: QueryParams = req.query;
   const { userId } = req.params;
-
   try {
     const pageNum = page ? parseInt(page) : 1;
     const limitNum = limit ? parseInt(limit) : 5;
@@ -20,6 +19,9 @@ export const findAllFavouriteBooks = async (
       options: {
         limit: limitNum,
         skip: pageNum * limitNum - limitNum,
+      },
+      populate: {
+        path: "genre",
       },
     });
 
@@ -32,6 +34,14 @@ export const findAllFavouriteBooks = async (
     }
 
     const allBooks = await Favourite.findOne({ user: userId });
+
+    if (!allBooks) {
+      return res.status(200).json({
+        code: 200,
+        message: "Books retrive successfully.",
+        data: [],
+      });
+    }
 
     const bookCount = allBooks?.books.length;
 
