@@ -19,7 +19,6 @@ export const deleteGenre = async (
     await Genre.findByIdAndDelete(genreId);
     res.sendStatus(204);
   } catch (error) {
-    console.log(error);
     next(badRequest("Something went wrong while deleting genre."));
   }
 };
