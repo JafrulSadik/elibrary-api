@@ -54,7 +54,7 @@ export const login = async (
           email: user.email,
           role: user.role,
         },
-        token: {
+        tokens: {
           accessToken: token,
         },
       },
