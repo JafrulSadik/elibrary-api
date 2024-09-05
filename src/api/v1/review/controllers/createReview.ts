@@ -9,13 +9,15 @@ export const createReview = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { rating, comment } = req.body;
+  const { rating, comment, page, limit } = req.body;
   const _req = req as AuthRequest;
   const authorId = _req.user.id;
   const { bookId } = req.params;
 
   try {
-    const book = await Book.findById({ _id: bookId });
+    const book = await Book.findById({ _id: bookId }).skip(
+      page * limit - limit
+    );
     if (!book) {
       return next(notFound("Book not found!"));
     }
@@ -58,7 +60,6 @@ export const createReview = async (
       data: review,
     });
   } catch (error) {
-    console.log(error);
     return next(serverError("Something went wrong. Review failed."));
   }
 };

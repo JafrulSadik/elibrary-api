@@ -19,6 +19,10 @@ export const findAllReviewsForBook = async (
     const sortField = sort_by || "updatedAt";
 
     const reviews: ReveiwType[] = await Review.find({ bookId })
+      .populate({
+        path: "authorId",
+        select: ["name"],
+      })
       .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);
