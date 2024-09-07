@@ -5,7 +5,9 @@ export type UserType = {
   _id: string;
   name: string;
   email: string;
+  profileImg: string | null;
   password: string;
+  about: string | null;
   role: Role;
   status: Status;
   createdAt: Date;

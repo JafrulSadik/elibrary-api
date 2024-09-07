@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema<UserType>(
       unique: true,
       required: true,
     },
+    profileImg: {
+      type: String,
+    },
     password: {
       type: String,
     },
@@ -22,6 +25,9 @@ const userSchema = new mongoose.Schema<UserType>(
       type: String,
       enum: ["admin", "user"],
       default: "user",
+    },
+    about: {
+      type: String,
     },
     status: {
       type: String,

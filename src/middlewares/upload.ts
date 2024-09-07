@@ -46,6 +46,13 @@ const fileFilter = (
     } else {
       cb(null, false);
     }
+  } else if (file.fieldname === "profileImg") {
+    // Accept only PDFs for pdfFile
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
   } else {
     cb(null, false);
   }
