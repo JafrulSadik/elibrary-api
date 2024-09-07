@@ -56,7 +56,6 @@ export const getUserBooks = async (
       pagination,
     });
   } catch (error) {
-    console.log(error);
     return next(serverError("An error occurred while retrieving books data."));
   }
 };
