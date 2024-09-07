@@ -9,11 +9,21 @@ export const updateBook = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, genre, description, author, bookId } = req.body;
+  const { title, genre, description, bookId } = req.body;
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+  if (!title || !genre || !description || !bookId) {
+    if (files["coverImage"]) {
+      await removeFile(files["coverImage"][0]);
+    }
+    if (files["pdfFile"]) {
+      await removeFile(files["pdfFile"][0]);
+    }
+    return next(notFound("Invalid peremeters."));
+  }
+
   try {
     const book = await Book.findById({ _id: bookId });
-
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
     if (!book) {
       if (files["coverImage"]) {
