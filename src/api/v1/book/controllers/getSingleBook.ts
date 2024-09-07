@@ -11,7 +11,6 @@ export const getSingleBook = async (
     const { bookId } = req.params;
 
     const book = await Book.findById({ _id: bookId })
-      .lean()
       .populate({
         path: "author",
         select: "name",
