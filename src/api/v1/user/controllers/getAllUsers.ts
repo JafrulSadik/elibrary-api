@@ -47,7 +47,6 @@ export const getAllUser = async (
       pagination,
     });
   } catch (error) {
-    console.log(error);
     return next(serverError("Error occured while retriving users data."));
   }
 };

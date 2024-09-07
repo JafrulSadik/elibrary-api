@@ -18,10 +18,12 @@ export const findAllBooks = async (
       sort_type,
       search,
       genres = "",
+      authors = "",
+      ratings = "",
     }: QueryParams = req.query;
 
     const pageNum = page ? parseInt(page) : 1;
-    const limitNum = limit ? parseInt(limit) : 10;
+    const limitNum = limit ? parseInt(limit) : 15;
     const sortField = sort_by || "updatedAt";
     const sortOrder = sort_type === "asc" ? 1 : -1;
     const searchTerm = search || "";
@@ -33,20 +35,37 @@ export const findAllBooks = async (
       return id._id.toString();
     });
 
-    const searchFilter = transformGenreId.length
-      ? {
-          title: {
-            $regex: searchTerm,
-            $options: "i",
-          },
-          genre: transformGenreId,
-        }
-      : {
-          title: {
-            $regex: searchTerm,
-            $options: "i",
-          },
-        };
+    const authorsId = authors ? authors?.split(",") : [];
+    const starRatings = ratings ? ratings?.split(",") : [];
+    const stars = starRatings.map((rating) => parseInt(rating));
+
+    const searchFilter = {
+      title: {
+        $regex: searchTerm,
+        $options: "i",
+      },
+      ...(transformGenreId.length > 0 && { genre: { $in: transformGenreId } }),
+      ...(authorsId.length > 0 && { author: { $in: authorsId } }),
+      ...(stars.length > 0 && {
+        $expr: {
+          $in: [
+            {
+              $cond: {
+                if: {
+                  $and: [
+                    { $gt: ["$numOfRating", 0] },
+                    { $gt: ["$totalRating", 0] },
+                  ],
+                },
+                then: { $floor: { $divide: ["$totalRating", "$numOfRating"] } },
+                else: null,
+              },
+            },
+            stars,
+          ],
+        },
+      }),
+    };
 
     const books = await Book.find(searchFilter)
       .populate({ path: "author", select: ["name"] })
@@ -70,7 +89,6 @@ export const findAllBooks = async (
       pagination,
     });
   } catch (error) {
-    console.log(error);
     return next(serverError("An error occurred while retrieving books data."));
   }
 };
