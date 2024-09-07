@@ -26,4 +26,6 @@ reviewRouter.patch(
   reviewController.updateReview
 );
 
+reviewRouter.get("/:bookId/review-count", reviewController.reviewCount);
+
 export default reviewRouter;
