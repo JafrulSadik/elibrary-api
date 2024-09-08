@@ -142,7 +142,7 @@ export const updateBook = async (
     res.status(200).json({
       code: 200,
       message: "Ebook updated successfully.",
-      book: updatedBook,
+      data: updateBook,
     });
   } catch (error) {
     return next(serverError("There was a problem updating the book"));

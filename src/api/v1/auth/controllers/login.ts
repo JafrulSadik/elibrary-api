@@ -52,6 +52,7 @@ export const login = async (
           id: user._id.toString(),
           name: user.name,
           email: user.email,
+          profileImg: user?.profileImg || "",
           role: user.role,
         },
         tokens: {

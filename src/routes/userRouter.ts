@@ -34,4 +34,11 @@ userRouter.get(
 );
 userRouter.get("/", userController.getAllUser);
 
+userRouter.get(
+  "/profile/:userId",
+  authenticate,
+  authorize(["user", "admin"]),
+  userController.getProfile
+);
+
 export default userRouter;

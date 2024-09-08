@@ -16,7 +16,6 @@ export const updateUserInfo = async (
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
     const _req = req as AuthRequest;
-
     const user = await User.findById(_req.user.id);
 
     if (!user) {
@@ -27,8 +26,6 @@ export const updateUserInfo = async (
     }
 
     let profileImgUploadResult;
-
-    console.log(files);
 
     if (files["profileImg"]) {
       const profileImgMimeType = files["profileImg"][0].mimetype
@@ -70,7 +67,7 @@ export const updateUserInfo = async (
       await removeFile(files["profileImg"][0]);
     }
 
-    const updatedUser = await User.findByIdAndUpdate(_req.user.id, {
+    await User.findByIdAndUpdate(_req.user.id, {
       name: name || user.name,
       about: about,
       profileImg: profileImgUploadResult
@@ -78,10 +75,22 @@ export const updateUserInfo = async (
         : user.profileImg,
     });
 
-    res.status(200).json({
+    const updatedUser = await User.findById(_req.user.id);
+
+    const response = {
       code: 200,
       message: "Successfully update user's data.",
-    });
+      data: {
+        id: updatedUser?._id,
+        name: updatedUser?.name,
+        email: updatedUser?.email,
+        role: updatedUser?.role,
+        about: updatedUser?.about,
+        profileImg: updatedUser?.profileImg,
+      },
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     console.log({ error });
     return next(serverError("An error occurred while retrieving books data."));

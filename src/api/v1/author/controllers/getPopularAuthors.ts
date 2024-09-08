@@ -31,6 +31,7 @@ export const getPopularAuthors = async (
         $project: {
           _id: 1,
           name: 1,
+          profileImg: 1,
           totalBooks: { $size: "$books" },
           totalDownloads: { $sum: "$books.downloads" },
         },

@@ -21,7 +21,7 @@ export const findAllReviewsForBook = async (
     const reviews: ReveiwType[] = await Review.find({ bookId })
       .populate({
         path: "authorId",
-        select: ["name"],
+        select: ["name", "profileImg"],
       })
       .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)

@@ -13,7 +13,7 @@ export const getSingleBook = async (
     const book = await Book.findById({ _id: bookId })
       .populate({
         path: "author",
-        select: "name",
+        select: ["name", "profileImg", "about"],
       })
       .populate({
         path: "genre",
