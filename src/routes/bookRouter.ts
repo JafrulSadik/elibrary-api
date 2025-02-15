@@ -42,6 +42,7 @@ bookRouter.delete(
 
 bookRouter.get("/", bookController.findAllBooks);
 bookRouter.get("/latest", bookController.getLatestBooks);
+bookRouter.get("/popular", bookController.getPopularBooks);
 bookRouter.get("/:bookId", bookController.getSingleBook);
 
 export default bookRouter;
