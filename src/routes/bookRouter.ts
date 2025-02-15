@@ -22,6 +22,7 @@ bookRouter.post(
   upload.fields(fields),
   bookController.createBook
 );
+
 bookRouter.put(
   "/",
   authenticate,
@@ -30,6 +31,7 @@ bookRouter.put(
   upload.fields(fields),
   bookController.updateBook
 );
+
 bookRouter.delete(
   "/:bookId",
   authenticate,
@@ -37,7 +39,9 @@ bookRouter.delete(
   bookOwnership,
   bookController.deleteBook
 );
+
 bookRouter.get("/", bookController.findAllBooks);
+bookRouter.get("/latest", bookController.getLatestBooks);
 bookRouter.get("/:bookId", bookController.getSingleBook);
 
 export default bookRouter;
