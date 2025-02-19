@@ -9,13 +9,13 @@ export const createBook = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { title, genreId, description, coverImageUrl, bookUrl } = req.body;
+  const { title, genreId, description, coverImageUrl, bookFileUrl } = req.body;
 
   const _req = req as AuthRequest;
   const user = _req.user;
 
   try {
-    if (!title || !genreId || !description || !coverImageUrl || !bookUrl) {
+    if (!title || !genreId || !description || !coverImageUrl || !bookFileUrl) {
       return next(badRequest("Invalid parameters."));
     }
 
@@ -30,7 +30,7 @@ export const createBook = async (
       genre: genreId,
       author: user.id,
       cover: coverImageUrl,
-      file: bookUrl,
+      file: bookFileUrl,
     });
 
     res.status(201).json({
