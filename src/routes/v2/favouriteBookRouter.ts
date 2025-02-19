@@ -1,0 +1,28 @@
+import express from "express";
+import { favouriteController } from "../../api/v2/favourite";
+import { authenticate, authorize } from "../../middlewares/v2";
+
+const favouriteBookRouter = express.Router();
+
+favouriteBookRouter.patch(
+  "/add",
+  authenticate,
+  authorize(["user", "admin"]),
+  favouriteController.addToFavourite
+);
+
+favouriteBookRouter.get(
+  "/books/:userId",
+  authenticate,
+  authorize(["user", "admin"]),
+  favouriteController.findAllFavouriteBooks
+);
+
+favouriteBookRouter.get(
+  "/:userId/:bookId",
+  authenticate,
+  authorize(["user", "admin"]),
+  favouriteController.isAddedToFavourite
+);
+
+export default favouriteBookRouter;

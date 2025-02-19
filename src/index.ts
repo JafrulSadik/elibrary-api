@@ -1,8 +1,9 @@
 import express, { Request, Response } from "express";
 import config from "./config/config";
 import dbConnect from "./config/db";
-import globalErrorHandler from "./middlewares/globalErrorHandler";
-import router from "./routes";
+import globalErrorHandler from "./middlewares/common/globalErrorHandler";
+import v1router from "./routes/v1";
+import v2router from "./routes/v2";
 
 const app = express();
 
@@ -21,7 +22,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Use the combined router
-app.use(router);
+app.use("/api/v1", v1router);
+app.use("/api/v2", v2router);
 
 app.use(globalErrorHandler);
 const port = config.port || 5110;
