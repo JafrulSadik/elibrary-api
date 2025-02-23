@@ -1,15 +1,6 @@
 import express from "express";
 import { userController } from "../../api/v2/user";
 import { authenticate, authorize } from "../../middlewares/v2";
-import upload from "../../middlewares/v2/upload";
-
-const fields = [
-  {
-    name: "profileImg",
-    maxCount: 1,
-  },
-];
-
 const userRouter = express.Router();
 
 userRouter.get(
@@ -19,12 +10,7 @@ userRouter.get(
   userController.getSingleUser
 );
 
-userRouter.patch(
-  "/",
-  authenticate,
-  upload.fields(fields),
-  userController.updateUserInfo
-);
+userRouter.patch("/", authenticate, userController.updateUserInfo);
 
 userRouter.get(
   "/:userId/all-books",
