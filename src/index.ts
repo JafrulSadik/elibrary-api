@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Request, Response } from "express";
 import config from "./config/config";
 import dbConnect from "./config/db";
@@ -6,6 +7,12 @@ import v1router from "./routes/v1";
 import v2router from "./routes/v2";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 app.use(express.json());
 
