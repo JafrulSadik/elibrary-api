@@ -10,7 +10,7 @@ export const bookExist = async (bookId: string) => {
   return book ? true : false;
 };
 
-export const countBooks = async (search: string = "") => {
+export const countBooks = async (search: string) => {
   const filter = {
     title: {
       $regex: search,
