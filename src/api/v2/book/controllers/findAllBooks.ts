@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { countBooks } from "../../../../lib/book";
 import Book from "../../../../models/Book";
 import Genre from "../../../../models/Genre";
 import { QueryParams } from "../../../../types";
@@ -23,7 +22,7 @@ export const findAllBooks = async (
     }: QueryParams = req.query;
 
     const pageNum = page ? parseInt(page) : 1;
-    const limitNum = limit ? parseInt(limit) : 15;
+    const limitNum = limit ? parseInt(limit) : 12;
     const sortField = sort_by || "updatedAt";
     const sortOrder = sort_type === "asc" ? 1 : -1;
     const searchTerm = search || "";
@@ -74,7 +73,7 @@ export const findAllBooks = async (
       .skip(pageNum * limitNum - limitNum)
       .limit(limitNum);
 
-    const bookNum = await countBooks(searchTerm);
+    const bookNum = await Book.countDocuments(searchFilter);
 
     const pagination = paginationGen({
       totalItem: bookNum,
