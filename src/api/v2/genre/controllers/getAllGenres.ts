@@ -8,24 +8,17 @@ export const findAllGenre = async (
   res: Response,
   next: NextFunction
 ) => {
-  const {
-    page,
-    limit,
-    sort_by,
-    sort_type,
-    search,
-    genres = "",
-  }: QueryParams = req.query;
+  const { limit, genres = "" }: QueryParams = req.query;
 
   const genreCodes = genres?.split(",");
   const limitNum = limit ? parseInt(limit) : 10;
 
   try {
-    const selectedGenre = await Genre.find({ code: genreCodes || "" });
+    const selectedGenre = await Genre.find({ code: genreCodes || "" }).lean();
 
-    const otherGenres = await Genre.find({ code: { $nin: genreCodes } }).limit(
-      limitNum
-    );
+    const otherGenres = await Genre.find({ code: { $nin: genreCodes } })
+      .limit(limitNum)
+      .lean();
 
     const allGenres = [...selectedGenre, ...otherGenres];
 
