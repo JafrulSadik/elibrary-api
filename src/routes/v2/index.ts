@@ -15,6 +15,6 @@ router.use("/users", userRouter);
 router.use("/books", reviewRouter);
 router.use("/genres", genreRouter);
 router.use("/favourite", favouriteBookRouter);
-router.use("/author", authorRouter);
+router.use("/authors", authorRouter);
 
 export default router;

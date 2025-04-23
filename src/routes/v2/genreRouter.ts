@@ -15,6 +15,8 @@ genreRouter.get("/", genreController.findAllGenre);
 
 genreRouter.get("/:genreId/books", genreController.findAllGenre);
 
+genreRouter.get("/genres-with-books", genreController.findAllGenresWithBooks);
+
 genreRouter.delete(
   "/:genreId",
   authenticate,
