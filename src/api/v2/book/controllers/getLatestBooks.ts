@@ -72,7 +72,8 @@ export const getLatestBooks = async (
       .populate({ path: "genre", select: ["title", "code"] })
       .sort([[sortField, sortOrder]])
       .skip(pageNum * limitNum - limitNum)
-      .limit(limitNum);
+      .limit(limitNum)
+      .lean();
 
     const bookNum = await countBooks(searchTerm);
 
