@@ -33,7 +33,9 @@ export const createBook = async (
       file: bookFileUrl,
     });
 
-    res.status(201).json({
+    await book.save();
+
+    return res.status(201).json({
       code: 201,
       message: "Ebook created successfully.",
       book: book,
